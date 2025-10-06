@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>5さいむけ☆ほいくえん くみわけ しんだん</title>
+  <meta name="description" content="5さいでもできる 10もんの たのしい くみわけしんだん！こたえると『◯◯（いろ）ぐみ』がわかって、すぐシェアできるよ。" />
+  <meta name="theme-color" content="#ffdfe9" />
+  <!-- OGP / Twitter -->
+  <meta property="og:title" content="5さいむけ☆ほいくえん くみわけ しんだん" />
+  <meta property="og:description" content="10もん こたえるだけ！きみの『◯◯（いろ）ぐみ』を はっけん！" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <!-- JSON-LD（簡易） -->
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"Quiz","name":"ほいくえん くみわけ しんだん","about":"5さい向け診断","audience":{"@type":"PeopleAudience","suggestedMinAge":5}}
+  </script>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#FFF7FB;--card:#fff;--ink:#333;--muted:#666;--accent:#FF6FA5;--accent2:#8ED1FC;--radius:20px;--shadow:0 6px 20px rgba(0,0,0,.08);
+      --fs-title:clamp(22px,6vw,30px);--fs-base:clamp(18px,3.8vw,22px);--fs-btn:clamp(18px,4vw,22px);
+      --bg1:#ffe0ef; --bg2:#e1f1ff;
+    }
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;font-family:'Kosugi Maru',"Hiragino Maru Gothic ProN","Noto Sans JP",sans-serif;
+      background:
+        radial-gradient(1200px 600px at 20% -10%, var(--bg1), transparent),
+        radial-gradient(900px 500px at 120% 20%, var(--bg2), transparent),
+        var(--bg);
+      color:var(--ink);
+      transition: background 600ms ease;
+    }
+    /* 彩りバブル */
+    .bubbles{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+    .bubble{position:absolute;border-radius:999px;filter:blur(2px);opacity:.6;animation:float 10s ease-in-out infinite alternate}
+    .b1{background:#ffd2e3;width:180px;height:180px;left:-40px;top:40px;animation-duration:12s}
+    .b2{background:#cfeaff;width:220px;height:220px;right:-60px;top:120px}
+    .b3{background:#fff1b8;width:140px;height:140px;left:30%;bottom:-40px;animation-duration:14s}
+    .b4{background:#c9f3c9;width:160px;height:160px;right:20%;bottom:-60px}
+    @keyframes float{to{transform:translateY(-20px) translateX(10px)}}
+
+    .wrap{max-width:900px;margin:0 auto;padding:16px 16px 80px}
+    .app{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    header{display:flex;align-items:center;gap:12px;padding:16px 18px;background:linear-gradient(90deg,#ffb8d1,#b6dfff)}
+    h1{margin:0;font-size:var(--fs-title);line-height:1.2}
+
+    .screen{padding:16px}
+    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin:12px 0}
+    .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}
+    .grid-2{display:grid;gap:12px}
+    @media(min-width:720px){.grid-2{grid-template-columns:1fr 1fr}}
+
+    .btn{border:0;border-radius:16px;padding:14px 16px;font-size:var(--fs-btn);cursor:pointer;box-shadow:var(--shadow);background:#fff;transition:transform .08s ease, box-shadow .2s ease}
+    .btn:active{transform:translateY(1px) scale(.98)}
+    .btn.primary{background:linear-gradient(90deg,#ff6fa5,#ff9fc0);color:#fff}
+    .btn.ghost{background:#fff;border:2px solid #eee}
+    .btn.icon{display:inline-flex;align-items:center;gap:10px}
+
+    .bar{height:12px;background:#f2f2f2;border-radius:999px;overflow:hidden}
+    .bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s cubic-bezier(.2,.8,.2,1)}
+
+    .q-title{font-size:clamp(20px,5vw,26px);margin:12px 0 10px}
+    .choices{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:640px){.choices{grid-template-columns:1fr 1fr}}
+    .choice{display:flex;gap:12px;align-items:center;justify-content:flex-start;text-align:left;border:2px solid #eee;background:#fff;padding:16px;border-radius:16px;font-size:clamp(18px,4.5vw,22px);transition:transform .06s ease, box-shadow .2s ease, background-color .2s ease}
+    .choice .emoji{font-size:26px;transition:transform .2s ease}
+    .choice:active{transform:scale(.98)}
+    .choice:hover .emoji{transform:translateY(-2px)}
+    .choice[data-color="red"]{border-color:#ffd2e1}
+    .choice[data-color="blue"]{border-color:#cfeaff}
+    .choice[data-color="yellow"]{border-color:#fff1b8}
+    .choice[data-color="green"]{border-color:#c9f3c9}
+    .choice[data-color="pink"]{border-color:#f1dcff}
+    .choice[data-color="red"]:hover{background:#fff2f7}
+    .choice[data-color="blue"]:hover{background:#f2f9ff}
+    .choice[data-color="yellow"]:hover{background:#fff8da}
+    .choice[data-color="green"]:hover{background:#f2fff2}
+    .choice[data-color="pink"]:hover{background:#fbf5ff}
+
+    .result{text-align:center;display:grid;gap:14px;position:relative}
+    .tag{display:inline-block;padding:10px 14px;border-radius:999px;font-weight:700;color:#fff;animation:pop .4s ease}
+    .desc{font-size:clamp(18px,4vw,22px)}
+    .mini{font-size:14px;color:var(--muted)}
+
+    .mascot{width:min(300px, 65vw);max-height:360px;object-fit:contain;margin:10px auto;display:block;transition:transform .4s ease}
+    .mascot.play{transform:translateY(-2px)}
+
+    /* 紙吹雪 */
+    .confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .piece{position:absolute;width:10px;height:16px;border-radius:3px;opacity:.9;animation:fall 1.8s linear forwards}
+    @keyframes fall{to{transform:translateY(110%) rotate(540deg);opacity:.7}}
+
+    @keyframes pop{0%{transform:scale(.8);opacity:.0}100%{transform:scale(1);opacity:1}}
+  </style>
+</head>
+<body>
+  <div class="bubbles" aria-hidden="true">
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b3"></div>
+    <div class="bubble b4"></div>
+  </div>
+  <div class="wrap">
+    <div class="app" role="application" aria-label="5さい むけ しんだん">
+      <header>
+        <h1>5さいむけ☆ほいくえん くみわけ しんだん</h1>
+      </header>
+
+      <!-- Intro -->
+      <div class="screen intro" id="screen-intro">
+        <div class="card">
+          <p style="font-size:var(--fs-base)">ボタンを ぽちぽち！<br>10もん こたえるだけで、<strong>きみだけの『◯◯（いろ）ぐみ』</strong>が でてくるよ。<br>ドキドキ わくわく、なにぐみかな？</p>
+          <div class="grid-2">
+            <button class="btn primary icon" id="startBtn">▶︎ はじめる</button>
+            <div class="controls">
+              <button class="btn ghost" id="contrastBtn">🌓 みやすく</button>
+            </div>
+          </div>
+        </div>
+        <div class="card mini">※ このサイトは こたえを サーバーに おくりません。あんしんして あそべます。</div>
+      </div>
+
+      <!-- Quiz -->
+      <div class="screen" id="screen-quiz" hidden>
+        <div class="card">
+          <div class="bar" aria-hidden="true"><div class="bar-fill" id="bar"></div></div>
+          <div class="q-title" id="qTitle">Q1</div>
+          <div class="choices" id="choices" role="group" aria-label="せんたくし"></div>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="screen" id="screen-result" hidden>
+        <div class="card result">
+          <div class="confetti" id="confetti"></div>
+          <div id="tag" class="tag">◯◯ぐみ</div>
+          <!-- ▼▼ ここを画像表示に差し替え ▼▼ -->
+          <img id="mascotImg" class="mascot" alt="キャラクター" />
+          <!-- ▲▲ 差し替え終わり ▲▲ -->
+          <div id="resultTitle" class="q-title">きみは …</div>
+          <div id="resultDesc" class="desc"></div>
+          <div id="parentTip" class="mini"></div>
+          <div class="controls" style="justify-content:center">
+            <button class="btn primary" id="shareBtn">📣 シェア</button>
+            <button class="btn ghost" id="shareX">𝕏 ポスト</button>
+            <button class="btn ghost" id="shareLine">LINE</button>
+            <button class="btn ghost" id="openInstaBtn">📷 Instagramをひらく</button>
+            <button class="btn ghost" id="saveCardBtn">🖼 カード保存</button>
+            <button class="btn ghost" id="mbtiToggleBtn">🔍 MBTIひみつ</button>
+            <button class="btn ghost" id="restartBtn">↺ もういちど</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ===== 画像ファイル名（ご指定どおり合わせます） =====
+// 例：/img/mascot_red.png など、サイト公開ディレクトリに配置してください。
+const GROUPS={
+  red:{name:'あかぐみ',color:'#FF6FA5',text:'#fff',
+       desc:'やったー！きみは <つよくて げんき> の あか。やってみるパワーが とまらない！',
+       adult:'外向（E）と判断（J）がつよめ。みんなをぐいっとまとめるリーダー気質。考えるより先にまずやってみる“パワー係”。短い合図（3・2・1）で切り替えやすく、行事前になると集中力がぐんと上がるタイプ。',tip:'あそぶ前に「3・2・1でおわり」の合図◎',
+       bg1:'#ffcae0', bg2:'#fff1f7', img:'img/mascot_red.png'},
+  blue:{name:'あおぐみ',color:'#8ED1FC',text:'#103b5b',
+       desc:'しずかに じっくり。よくみて かんがえる ちえもち！',
+       adult:'内向（I）と思考（T）寄り。まずはよく見て、静かに考えてから行動する参謀タイプ。ルールや手順が見えると安心し、丁寧で正確。周りがあわてている時ほど落ち着いて助け舟を出せる。',tip:'せかさない声かけ。じぶんのペース大切',
+       bg1:'#d7eeff', bg2:'#eef8ff', img:'img/mascot_blue.png'},
+  yellow:{name:'きいろぐみ',color:'#FFE066',text:'#5b4e00',
+       desc:'ピカッ！ひらめき だいすき。わくわく さがし名人！',
+       adult:'直感（N）と知覚（P）寄り。ひらめきで世界が広がるアイデアメーカー。予定はゆるめがはかどり、体験から学ぶのが得意。新しい遊び方をすぐ見つけて場を明るくするムードメーカー。',tip:'きりかえサイン（歌・ベル）で◎',
+       bg1:'#ffe996', bg2:'#fff7cd', img:'img/mascot_yellow.png'},
+  green:{name:'みどりぐみ',color:'#A0E7A0',text:'#0b3d0b',
+       desc:'ふわっと あったか。みんなの こころを なでる いやしの手。',
+       adult:'感情（F）寄り＋やや内向（I）。気持ちのアンテナが高感度で、だれかの“うれしい・かなしい”にすぐ気づけるヒーラー。静かな環境で力を発揮し、安心できる人や物がそばにあるとグンと伸びる。',tip:'休けいと すきな ぬいぐるみ◎',
+       bg1:'#dcffe0', bg2:'#f3fff4', img:'img/mascot_green.png'},
+  pink:{name:'ももぐみ',color:'#C9A0FF',text:'#3c1f63',
+       desc:'キラリ☆ つくるの てんさい。アイデアを かたちに できるよ！',
+       adult:'感覚（S）と感情（F）寄りのクリエイター。手ざわり・色・音といった五感の世界が豊かで、作品づくりに没頭できる。小さなこだわりが魅力。できた作品を言葉で具体的にほめられると自己効力感が急上昇。',tip:'作品をほめると やる気UP！',
+       bg1:'#e9dbff', bg2:'#f6efff', img:'img/mascot_pink.png'}
+};
+
+// ===== 4択×10問（省略せず現状維持） =====
+const QUESTIONS=[
+ {q:'あさ、ママが「はやく〜！」と いったら？',choices:[
+  {t:'すぐ ダッシュ！',e:'🏃',color:'red'},
+  {t:'ちょっと かんがえる',e:'🤔',color:'blue'},
+  {t:'「あと すこし〜」',e:'🧸',color:'yellow'},
+  {t:'へんがおで ごまかす',e:'😜',color:'pink'}]},
+ {q:'ともだちが ないていたら？',choices:[
+  {t:'よしよし してあげる',e:'🤗',color:'green'},
+  {t:'せんせいを よぶ',e:'👩‍🏫',color:'blue'},
+  {t:'いっしょに ないちゃう',e:'😭',color:'yellow'},
+  {t:'へんがおで わらわせる',e:'🤣',color:'red'}]},
+ {q:'えんそくバスで どうする？',choices:[
+  {t:'そとを ずっと みる',e:'👀',color:'blue'},
+  {t:'となりと おしゃべり',e:'🗣️',color:'red'},
+  {t:'みつけた ものを ほうこく',e:'🔎',color:'yellow'},
+  {t:'ぼーっと ゆめの せかい',e:'💭',color:'pink'}]},
+ {q:'すきな あそびは？',choices:[
+  {t:'おにごっこ',e:'👟',color:'red'},
+  {t:'つみき',e:'🧱',color:'blue'},
+  {t:'おえかき',e:'🎨',color:'pink'},
+  {t:'ルール つくる',e:'📏',color:'yellow'}]},
+ {q:'「すき」な こが べつの こ と あそんでたら？',choices:[
+  {t:'いっしょに まぜてもらう',e:'🤝',color:'red'},
+  {t:'べつの あそび さがす',e:'🧭',color:'blue'},
+  {t:'やきもち → えに かく',e:'🖍️',color:'pink'},
+  {t:'じぶんが しかく（しきる）',e:'🎤',color:'yellow'}]},
+ {q:'こうさく タイム',choices:[
+  {t:'すぐ つくる',e:'✂️',color:'red'},
+  {t:'どう つくるか かんがえる',e:'📝',color:'blue'},
+  {t:'きらきら いっぱい',e:'✨',color:'pink'},
+  {t:'だれが じょうずか きになる',e:'👀',color:'yellow'}]},
+ {q:'あたらしい あそぐ が きた！',choices:[
+  {t:'すぐ やる',e:'🎢',color:'red'},
+  {t:'ともだちを みる',e:'👀',color:'blue'},
+  {t:'いつもの すべりだい',e:'🛝',color:'green'},
+  {t:'へんな あそびかた を かんがえる',e:'💡',color:'pink'}]},
+ {q:'おひるね タイム',choices:[
+  {t:'すぐ ねむる',e:'💤',color:'blue'},
+  {t:'ぬいぐるみ と いっしょ',e:'🧸',color:'green'},
+  {t:'「まだ ねない！」',e:'🙌',color:'red'},
+  {t:'あたまで おはなし つくって ねむれない',e:'📖',color:'pink'}]},
+ {q:'おかたづけ の ベル！',choices:[
+  {t:'よーい どん！で かたづけ',e:'🏁',color:'red'},
+  {t:'きれいに ならべる',e:'🧼',color:'pink'},
+  {t:'とりあえず つめこむ',e:'📦',color:'yellow'},
+  {t:'みてる だけ',e:'👀',color:'blue'}]},
+ {q:'むずかしい おしごと を だされたら？',choices:[
+  {t:'やってみる',e:'✍️',color:'red'},
+  {t:'けいかく してから',e:'📒',color:'blue'},
+  {t:'ママに きく',e:'👩‍👦',color:'green'},
+  {t:'しらべて みる',e:'🔍',color:'yellow'}]}
+];
+
+let step=0;const score={red:0,blue:0,yellow:0,green:0,pink:0};
+const intro=document.getElementById('screen-intro');
+const quiz=document.getElementById('screen-quiz');
+const result=document.getElementById('screen-result');
+const qTitle=document.getElementById('qTitle');
+const choicesEl=document.getElementById('choices');
+const bar=document.getElementById('bar');
+let showMBTI=false;
+
+function updateProgress(){bar.style.width=Math.round((step/QUESTIONS.length)*100)+'%'}
+function renderQuestion(){const item=QUESTIONS[step];qTitle.textContent=`Q${step+1}. ${item.q}`;choicesEl.innerHTML='';item.choices.forEach(c=>{const btn=document.createElement('button');btn.className='choice';btn.setAttribute('data-color',c.color);btn.innerHTML=`<span class="emoji">${c.e}</span> <span>${c.t}</span>`;btn.addEventListener('click',()=>choose(c.color));choicesEl.appendChild(btn)});updateProgress()}
+function choose(color){score[color]++;step++;if(step<QUESTIONS.length){renderQuestion()}else{showResult()}}
+function pickGroup(){return Object.entries(score).sort((a,b)=>b[1]-a[1])[0][0]}
+function applyTheme(g){document.documentElement.style.setProperty('--accent', g.color);document.documentElement.style.setProperty('--bg1', g.bg1);document.documentElement.style.setProperty('--bg2', g.bg2)}
+function resultText(g){return g.desc + (showMBTI?` ／ おとなむけ: ${g.adult}`:'')}
+
+function confettiBurst(color){const wrap=document.getElementById('confetti');wrap.innerHTML='';const colors=[color,'#ffffff','#ffd966','#8ed1fc','#c9a0ff','#a0e7a0'];const N=80;const w=wrap.clientWidth||300;for(let i=0;i<N;i++){const d=document.createElement('div');d.className='piece';d.style.left=Math.random()*w+'px';d.style.top=(-20-Math.random()*40)+'px';d.style.background=colors[Math.floor(Math.random()*colors.length)];d.style.transform=`rotate(${Math.random()*180}deg)`;d.style.animationDuration=(1.3+Math.random()*0.9)+'s';wrap.appendChild(d)}setTimeout(()=>{wrap.innerHTML=''},2200)}
+function playSE(){try{const ctx=new (window.AudioContext||window.webkitAudioContext)();const now=ctx.currentTime;const freqs=[880,1174,1568];freqs.forEach((f,i)=>{const o=ctx.createOscillator();const g=ctx.createGain();o.type='sine';o.frequency.value=f;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0.0001,now+i*0.01);g.gain.exponentialRampToValueAtTime(0.2,now+i*0.01+0.02);g.gain.exponentialRampToValueAtTime(0.0001,now+i*0.01+0.25);o.start(now+i*0.01);o.stop(now+i*0.01+0.26)})}catch(e){} }
+
+function showResult(){intro.hidden=true;quiz.hidden=true;result.hidden=false;const key=pickGroup();const g=GROUPS[key];const tag=document.getElementById('tag');tag.textContent=g.name;tag.style.background=g.color;tag.style.color=g.text;document.getElementById('resultTitle').textContent=`${g.name} が でたよ！`;document.getElementById('resultDesc').textContent=resultText(g);document.getElementById('parentTip').textContent=`ほごしゃメモ: ${g.tip}`;applyTheme(g);confettiBurst(g.color);playSE();
+  const imgEl=document.getElementById('mascotImg'); imgEl.src=g.img; imgEl.alt=g.name+" キャラクター"; imgEl.classList.add('play');
+}
+
+// PNGカード保存（1080x1920）— 画像を描き込む
+function saveCard(){const key=pickGroup();const g=GROUPS[key];const w=1080,h=1920;const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');const grad=ctx.createLinearGradient(0,0,w,h);grad.addColorStop(0,g.bg1||'#ffe4f1');grad.addColorStop(1,g.bg2||'#e9f7ff');ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);ctx.fillStyle='#333';ctx.font='bold 64px "Kosugi Maru", sans-serif';ctx.fillText('くみわけ しんだん',60,120);ctx.fillStyle=g.color;roundRect(ctx,60,160,360,100,50,true,false);ctx.fillStyle=g.text;ctx.font='bold 56px "Kosugi Maru", sans-serif';ctx.fillText(g.name,90,230);
+  // 画像を読み込んで描画
+  const img=new Image(); img.crossOrigin='anonymous'; img.src=g.img;
+  img.onload=()=>{ const size=520; ctx.drawImage(img, w-60-size, 140, size, size); drawTexts(); download(); };
+  img.onerror=()=>{ drawFrame(); drawTexts(); download(); };
+  function drawFrame(){ctx.fillStyle='#fff';ctx.strokeStyle='#eee';roundRect(ctx,w-620,140,520,520,28,true,true)}
+  function drawTexts(){ctx.fillStyle='#333';ctx.font='48px "Kosugi Maru", sans-serif';wrapText(ctx,resultText(g),60,360,560,64);ctx.fillStyle='#666';ctx.font='36px sans-serif';ctx.fillText('#くみわけしんだん',60,h-80)}
+  function download(){const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download=`${g.name}_カード.png`;a.click()}
+}
+function roundRect(ctx,x,y,w,h,r,fill,stroke){if(w<2*r)r=w/2;if(h<2*r)r=h/2;ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();if(fill)ctx.fill();if(stroke)ctx.stroke()}
+function wrapText(ctx,text,x,y,maxW,lineH){const chars=text.split('');let line='';for(let i=0;i<chars.length;i++){const test=line+chars[i];if(ctx.measureText(test).width>maxW){ctx.fillText(line,x,y);line=chars[i];y+=lineH}else{line=test}}ctx.fillText(line,x,y)}
+
+// 共有
+function webShare(){const key=pickGroup();const g=GROUPS[key];const text=`わたしは「${g.name}」タイプ！ #くみわけしんだん`;const url=location.href.split('#')[0];if(navigator.share){navigator.share({title:'くみわけ しんだん',text,url}).catch(()=>{})}else{window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,'_blank')}}
+function shareX(){const g=GROUPS[pickGroup()];const text=`わたしは「${g.name}」タイプ！ #くみわけしんだん`;const url=location.href;window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,'_blank')}
+function shareLine(){const g=GROUPS[pickGroup()];const text=`わたしは「${g.name}」タイプ！ #くみわけしんだん ${location.href}`;window.open(`https://line.me/R/msg/text/?${encodeURIComponent(text)}`,'_blank')}
+function openInstagram(){const deep='instagram://app';const web='https://www.instagram.com/';let opened=false;try{window.location.href=deep;opened=true}catch(e){}setTimeout(()=>{if(!opened) window.open(web,'_blank')},400)}
+
+// イベント
+ document.getElementById('startBtn').addEventListener('click',()=>{step=0;for(const k in score)score[k]=0;intro.hidden=true;quiz.hidden=false;result.hidden=true;renderQuestion()});
+ document.getElementById('restartBtn').addEventListener('click',()=>{step=0;for(const k in score)score[k]=0;intro.hidden=false;quiz.hidden=true;result.hidden=true;bar.style.width='0%';window.scrollTo({top:0,behavior:'smooth'})});
+ document.getElementById('shareBtn').addEventListener('click',webShare);
+ document.getElementById('shareX').addEventListener('click',shareX);
+ document.getElementById('shareLine').addEventListener('click',shareLine);
+ document.getElementById('saveCardBtn').addEventListener('click',saveCard);
+ document.getElementById('contrastBtn').addEventListener('click',()=>{document.body.classList.toggle('contrast')});
+ document.getElementById('mbtiToggleBtn').addEventListener('click',()=>{showMBTI=!showMBTI;const key=pickGroup();const g=GROUPS[key];document.getElementById('resultDesc').textContent=resultText(g)});
+ document.getElementById('openInstaBtn').addEventListener('click',openInstagram);
+</script>
+
+<!-- ✅ gtag（Google Analytics 4）: 計測IDを差し替えてください -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXYYYYZZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);} gtag('js', new Date());
+  gtag('config', 'G-XXXXYYYYZZ');
+</script>
+
+<!-- ✅ Microsoft Clarity: プロジェクトIDを差し替えてください -->
+<script>
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "CLARITY-PROJECT-ID");
+</script>
+</body>
+</html>
